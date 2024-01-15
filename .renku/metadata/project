@@ -17,7 +17,7 @@
     "@renku_data_type": "datetime.datetime",
     "@renku_data_value": "2024-01-15T14:13:32.146361+00:00"
   },
-  "description": "How to use ADORE for modeling.",
+  "description": "How to use ADORE for modeling",
   "id": "/projects/mltox/adore-modeling",
   "image": null,
   "keywords": [],
