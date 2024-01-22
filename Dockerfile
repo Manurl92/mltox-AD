@@ -6,7 +6,7 @@ FROM renku/renkulab-py:3.10-0.18.1 as builder
 # RENKU_VERSION determines the version of the renku CLI
 # that will be used in this image. To find the latest version,
 # visit https://pypi.org/project/renku/#history.
-ARG RENKU_VERSION=2.8.0
+ARG RENKU_VERSION=2.8.2.dev13+g7d5dd086
 
 # Install renku from pypi or from github if a dev version
 RUN if [ -n "$RENKU_VERSION" ] ; then \
