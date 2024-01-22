@@ -1,0 +1,17 @@
+data/processed/a-CA2F-same_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/ecotox_mortality_filtered.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/s-C2C_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/s-A2A_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/before_aggregation/ecotox_results.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/s-F2F-2_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/t-A2A_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/before_aggregation/ecotox_properties.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/ecotox_mortality_processed.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/t-C2C_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/s-F2F-3_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/s-F2F-1_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/before_aggregation/ecotox_species.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/a-CA2F-diff_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/a-FCA2FCA_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/t-F2F_mortality.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/before_aggregation/ecotox_tests.csv filter=lfs diff=lfs merge=lfs -text
