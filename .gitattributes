@@ -22,3 +22,4 @@ data/chemicals/ecotox_properties_with-oecd-function.csv filter=lfs diff=lfs merg
 data/chemicals/umap_output_from-fca.csv filter=lfs diff=lfs merge=lfs -text
 data/chemicals/functionaluses_output.csv filter=lfs diff=lfs merge=lfs -text
 data/chemicals/classyfire_output.csv filter=lfs diff=lfs merge=lfs -text
+data/taxonomy/FCA_pdm_species.csv filter=lfs diff=lfs merge=lfs -text
