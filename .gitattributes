@@ -15,3 +15,10 @@ data/processed/a-CA2F-diff_mortality.csv filter=lfs diff=lfs merge=lfs -text
 data/processed/a-FCA2FCA_mortality.csv filter=lfs diff=lfs merge=lfs -text
 data/processed/t-F2F_mortality.csv filter=lfs diff=lfs merge=lfs -text
 data/processed/before_aggregation/ecotox_tests.csv filter=lfs diff=lfs merge=lfs -text
+data/chemicals/ecotox_properties.sdf filter=lfs diff=lfs merge=lfs -text
+data/chemicals/toxprint_v2_vs_ecotox_properties.tsv filter=lfs diff=lfs merge=lfs -text
+data/chemicals/mordred-descriptors.csv filter=lfs diff=lfs merge=lfs -text
+data/chemicals/ecotox_properties_with-oecd-function.csv filter=lfs diff=lfs merge=lfs -text
+data/chemicals/umap_output_from-fca.csv filter=lfs diff=lfs merge=lfs -text
+data/chemicals/functionaluses_output.csv filter=lfs diff=lfs merge=lfs -text
+data/chemicals/classyfire_output.csv filter=lfs diff=lfs merge=lfs -text
