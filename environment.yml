@@ -1,14 +1,17 @@
 name: "base"
-# WARNING : As Renku makes use of mamba for more efficient package builds, please use the popular "conda-forge" channel
-# For more details : https://mamba.readthedocs.io/en/latest/user_guide/troubleshooting.html#mixing-the-defaults-and-conda-forge-channels
-# Using the defaults channel from Anaconda can easily result in getting your
-# laptop, CI pipeline, etc. blacklisted by Anaconda which makes building packages
-# impossible. To get permission to use Anaconda again you need to either pay or prove that
-# you meet the requirements for a free license. Using the conda-forge channel avoids 
-# these restrictions completely.
 channels:
   - conda-forge
-# dependencies:
-# - add packages here
-# - one per line
+dependencies:
+  - numpy>=1.22.2
+  - pandas>=1.4.4
+  - scipy>=1.9.3
+  - scikit-learn>=1.1.3
+  - matplotlib>=3.5.2
+  - seaborn>=0.12.0
+  - plotnine>=0.10.1
+  - plotly>=5.15.0
+  - rdkit>=2022.03.2
+  - gpflow>=2.5.2
+  - xgboost>=1.7.1
+  - shap>=0.42.1
 prefix: "/opt/conda"
