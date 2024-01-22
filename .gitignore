@@ -336,3 +336,12 @@ tags
 .renku.lock
 .renku/tmp
 .renku/cache
+
+
+
+# conda
+conda-env
+
+
+# output folders
+output_*
