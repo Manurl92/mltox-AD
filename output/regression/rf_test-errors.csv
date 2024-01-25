@@ -1,0 +1,9 @@
+fold,rmse,mae,r2,pearson,set,chem_prop,tax_pdm,tax_prop,exp,challenge,chem_fp,conctype,groupsplit,max_depth,max_features,max_samples,min_samples_leaf,min_samples_split,n_estimators
+trainvalid,0.29217,0.1764,0.96838,0.98418,trainvalid,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,molar,totallyrandom,200,sqrt,1.0,1,2,75
+test,0.49354,0.30532,0.91205,0.95508,test,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,molar,totallyrandom,200,sqrt,1.0,1,2,75
+trainvalid,0.30187,0.17956,0.96544,0.98266,trainvalid,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,molar,occurrence,200,sqrt,1.0,1,2,75
+test,0.94459,0.69825,0.71072,0.8443,test,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,molar,occurrence,200,sqrt,1.0,1,2,75
+trainvalid,0.29244,0.17611,0.96276,0.98137,trainvalid,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,mass,totallyrandom,200,sqrt,1.0,1,2,75
+test,0.49129,0.30359,0.89725,0.9473,test,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,mass,totallyrandom,200,sqrt,1.0,1,2,75
+trainvalid,0.30155,0.17962,0.95929,0.97955,trainvalid,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,mass,occurrence,200,sqrt,1.0,1,2,75
+test,0.94996,0.70007,0.66199,0.81494,test,chemprop,none,taxprop-migrate2,exp-dropfirst,t-F2F,MACCS,mass,occurrence,200,sqrt,1.0,1,2,75

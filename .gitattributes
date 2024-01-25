@@ -23,3 +23,4 @@ data/chemicals/umap_output_from-fca.csv filter=lfs diff=lfs merge=lfs -text
 data/chemicals/functionaluses_output.csv filter=lfs diff=lfs merge=lfs -text
 data/chemicals/classyfire_output.csv filter=lfs diff=lfs merge=lfs -text
 data/taxonomy/FCA_pdm_species.csv filter=lfs diff=lfs merge=lfs -text
+output/regression/rf_predictions.csv filter=lfs diff=lfs merge=lfs -text
