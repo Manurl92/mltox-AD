@@ -7,6 +7,7 @@
 
 
 
+
 ## B. Getting started
 
 1. Clone the repository.
@@ -16,7 +17,7 @@ This step needs an ssh connection.
 ```
 git clone git@gitlab.renkulab.io:mltox/adore-modeling.git
 cd adore-modeling/
-``
+```
 
 2. Install git LFS.
 
@@ -69,4 +70,4 @@ Models are trained and evaluated using several scripts. The following scripts ar
 3. testing: `34_analysis_regression_test_rf.py`
 4. evaluate testing: `44_evaluate_regression_rf.py`
 
-For other models and more detailed evaluations, check the modeling repository [mltox-model](https://renkulab.io/projects/mltox/mltox-model)
+For other models and more detailed evaluations, check the modeling repository [mltox-model](https://renkulab.io/projects/mltox/mltox-model).
