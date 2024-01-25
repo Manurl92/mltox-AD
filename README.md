@@ -1,40 +1,72 @@
-# adore-modeling
+# How to use the ADORE dataset for modeling
 
-How to use ADORE for modeling.
+[ADORE](https://renkulab.io/projects/mltox/adore) is a benchmark dataset for modeling acute mortality in fish, crustaceans, and algae. This repository shows how to model the challenges (i.e., data subsets) of ADORE.
 
-## Introduction
+## A. Project description
 
-This is a Renku project - basically a git repository with some
-bells and whistles. You'll find we have already created some
-useful things like `data` and `notebooks` directories and
-a `Dockerfile`.
 
-## Working with the project
 
-The simplest way to start your project is right from the Renku
-platform - just click on the `Sessions` tab and start a new session.
-This will start an interactive environment right in your browser.
 
-To work with the project anywhere outside the Renku platform,
-click the `Settings` tab where you will find the
-git repo URLs - use `git` to clone the project on whichever machine you want.
+## B. Getting started
 
-### Changing interactive session dependencies
+1. Clone the repository.
 
-Initially we install a very minimal set of packages to keep the images small.
-However, you can add python and conda packages in `requirements.txt` and
-`environment.yml` to your heart's content. If you need more fine-grained
-control over your environment, please see [the documentation](https://renku.readthedocs.io/en/stable/topic-guides/customizing-sessions.html).
+This step needs an ssh connection.
 
-## Project configuration
+```
+git clone git@gitlab.renkulab.io:mltox/adore-modeling.git
+cd adore-modeling/
+``
 
-Project options can be found in `.renku/renku.ini`. In this
-project there is currently only one option, which specifies
-the default type of environment to open, in this case `/lab` for
-JupyterLab. You may also choose `/tree` to get to the "classic" Jupyter
-interface.
+2. Install git LFS.
 
-## Moving forward
+The data files are stored as Large File Storage (LFS) files. This step can take a few minutes.
 
-Once you feel at home with your project, we recommend that you replace
-this README file with your own project documentation! Happy data wrangling!
+```
+git lfs install --local
+git lfs pull -I "data/processed/*"
+git lfs pull -I "data/chemicals/*"
+git lfs pull -I "data/taxonomy/*"
+```
+
+3. Create a conda environment.
+
+This command installs the environment directly in the project folder using the provided `environment.yml`.
+
+```
+conda env create --prefix ./conda-env --file ./environment.yml
+conda activate ./conda-env
+```
+
+If you prefer mamba:
+
+```
+mamba env create --prefix ./conda-env --file ./environment.yml
+conda activate ./conda-env
+```
+
+
+4. View the dataset.
+
+Open your favourite IDE and run the `10_view-a-dataset.py` script.
+
+OR 
+
+Run the script directly in the conda environment:
+
+```
+python 10_view-a-dataset.py
+```
+
+
+
+## C. Example/Usage
+
+Models are trained and evaluated using several scripts. The following scripts are for the random forest model.
+
+1. training (cross-validation): `14_analysis_regression_rf.py`
+2. evaluate training: `24_evaluate_regression_cv_rf.py`
+3. testing: `34_analysis_regression_test_rf.py`
+4. evaluate testing: `44_evaluate_regression_rf.py`
+
+For other models and more detailed evaluations, check the modeling repository [mltox-model](https://renkulab.io/projects/mltox/mltox-model)
