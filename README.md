@@ -4,7 +4,9 @@
 
 ## A. Project description
 
+The ADORE dataset was created as the field of ecotoxicology lacks a common dataset to drive ML research. 
 
+This repository contains the benchmark datasets, imported from the [data repository](https://renkulab.io/projects/mltox/adore), and scripts to view the data and to model the 't-F2F' challenge with random forests. 
 
 
 
@@ -39,6 +41,8 @@ conda env create --prefix ./conda-env --file ./environment.yml
 conda activate ./conda-env
 ```
 
+OR
+
 If you prefer mamba:
 
 ```
@@ -63,7 +67,7 @@ python 10_view-a-dataset.py
 
 ## C. Example/Usage
 
-Models are trained and evaluated using several scripts. The following scripts are for the random forest model.
+Models are trained and evaluated using several scripts. Here, we show this for random forest model.
 
 1. training (cross-validation): `14_analysis_regression_rf.py`
 2. evaluate training: `24_evaluate_regression_cv_rf.py`
