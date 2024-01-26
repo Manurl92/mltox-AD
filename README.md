@@ -4,7 +4,10 @@
 
 ## A. Project description
 
-The ADORE dataset was created as the field of ecotoxicology lacks a common dataset to drive ML research. 
+The ADORE dataset was created to drive ML research in the field of ecotoxicology. 
+
+ADORE is focused on acute mortality of fish, crustaceans, and algae. The core of ADORE is extracted from the ECOTOX database (September 2022 release), which was extended with chemical and taxonomic information. The complete dataset contains 33k data points of which the majority (26k) are on fish. Only tests where acute mortality is measured as effective concentration 50 (EC50) were retained. Check the [Nature data paper](https://doi.org/10.1038/s41597-023-02612-2) for a detailed description.
+
 
 This repository contains the benchmark datasets, imported from the [data repository](https://renkulab.io/projects/mltox/adore), and scripts to view the data and to model the 't-F2F' challenge with random forests. 
 
