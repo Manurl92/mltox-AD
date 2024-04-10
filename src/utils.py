@@ -124,7 +124,6 @@ def get_fingerprint(df, chem_fp, trainvalid_idx, test_idx):
                                                   col_fp=col_fp,
                                                   name_fp=chem_fp,
                                                   do_drop_duplicates=False)
-        print(df_fp_test.shape)
         df_fp_test = df_fp_test[list(df_fp_tv.columns)].copy()
 
     df_output = pd.DataFrame(index=df.index, columns=df_fp_tv.columns, dtype='float64')
@@ -141,6 +140,26 @@ def get_mol2vec(df_eco):
     df_mol2vec = df_eco[list_cols_mol2vec].copy()
 
     return df_mol2vec
+
+def get_mordred(df_eco):
+
+    # get mordred dataframe
+    list_cols_mordred = [col for col in df_eco.columns if 'mordred' in col]
+    df_mordred = df_eco[list_cols_mordred].copy()
+
+    # remove constant columns
+    df_mordred = df_mordred.loc[:, df_mordred.std() != 0].copy()
+
+    # remove columns with some very high values
+    df_mordred = df_mordred.loc[:, df_mordred.std() < 1e4].copy()
+
+    # remove integer columns with very low standard deviations
+    list_cols = list(df_mordred.loc[:, (df_mordred.dtypes == 'int') & (df_mordred.std() < 0.05)].columns)
+    if 'chem_mordred_SsssP' in df_mordred.columns:
+        list_cols += ['chem_mordred_SsssP']   # a float column with all zeros but one other value
+    df_mordred = df_mordred.drop(list_cols, axis=1)
+
+    return df_mordred
 
 # -------------------------------
 def read_result_files(path, file_type='errors'):

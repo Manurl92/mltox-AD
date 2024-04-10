@@ -168,7 +168,11 @@ for i, param in enumerate(ParameterGrid(param_grid)):
     df_eco, df_pdm, df_enc = mod.get_encoding_for_taxonomic_pdm(df_eco, df_pdm, col_tax='tax_gs')
 
     # encode taxonomic Add my Pet features 
-    df_tax_prop_all = mod.get_encoding_for_taxonomic_addmypet(df_eco)
+    if challenge not in ['s-A2A', 't-A2A']:
+        df_tax_prop_all = mod.get_encoding_for_taxonomic_addmypet(df_eco)
+    else:
+        df_tax_prop_all = pd.DataFrame()
+        tax_prop = 'none'
 
     # print summary
     print("# entries:", df_eco.shape[0])

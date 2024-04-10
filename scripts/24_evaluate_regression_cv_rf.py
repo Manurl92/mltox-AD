@@ -24,7 +24,7 @@ Path(path_output).mkdir(parents=True, exist_ok=True)
 # %%
 
 # Random Forest
-
+# TODO you can also move your results to a different folder
 path_output_dir = path_cvoutput + 'tmp/'
 df_errors = utils.read_result_files(path_output_dir, file_type='error')
 

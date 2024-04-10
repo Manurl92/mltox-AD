@@ -43,7 +43,6 @@ param_grid = [
      'challenge': ['t-F2F'],
      # features
      'chem_fp': ['MACCS', 'pcp', 'Morgan', 'ToxPrint', 'mol2vec', 'Mordred', 'none'], 
-#     'chem_fp': ['MACCS'], 
      'chem_prop': ['chemprop'],                 #['none', 'chemprop'],
      'tax_pdm': ['none'],                       #['none', 'pdm', 'pdm-squared'],
      'tax_prop': ['taxprop-migrate2'],          #['none', 'taxprop-migrate2', 'taxprop-migrate5'],
@@ -56,6 +55,7 @@ param_grid = [
 ]
 
 # Random forest hyperparameter grid
+# TODO choose the grid setting for your run
 hyperparam_grid = [
     {
     # model hyperparameters     
@@ -155,7 +155,11 @@ for i, param in enumerate(ParameterGrid(param_grid)):
     df_eco, df_pdm, df_enc = mod.get_encoding_for_taxonomic_pdm(df_eco, df_pdm, col_tax='tax_gs')
 
     # encode taxonomic Add my Pet features 
-    df_tax_prop_all = mod.get_encoding_for_taxonomic_addmypet(df_eco)
+    if challenge not in ['s-A2A', 't-A2A']:
+        df_tax_prop_all = mod.get_encoding_for_taxonomic_addmypet(df_eco)
+    else:
+        df_tax_prop_all = pd.DataFrame()
+        tax_prop = 'none'
 
     ## response variable
     ## -----------------

@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import root_mean_squared_error, mean_absolute_error, r2_score
 import scipy.stats as stats
 
 import gpflow
@@ -226,6 +226,27 @@ def standardscale_variables(df,
     
     return df_output
 
+def minmaxscale_variables(df, 
+                          trainvalid_idx, 
+                          test_idx):
+
+    from sklearn.preprocessing import MinMaxScaler
+
+    # get trainvalid and test set
+    X = df.to_numpy(dtype='int64')
+    X_trainvalid = X[trainvalid_idx]
+    X_test = X[test_idx]
+
+    # scale features based on training set
+    scaler = MinMaxScaler().fit(X_trainvalid)
+    X_trainvalid = scaler.transform(X_trainvalid)
+    X_test = scaler.transform(X_test)
+    df_output = pd.DataFrame(index=df.index, columns=df.columns, dtype='float64')
+    df_output.iloc[trainvalid_idx] = X_trainvalid
+    df_output.iloc[test_idx] = X_test
+    
+    return df_output
+
 def get_df_exp(df_exp_all):
 
     df_exp = df_exp_all.copy()
@@ -251,6 +272,21 @@ def get_df_chem_fp(chem_fp,
                                              test_idx)
         lengthscales_fp = np.round(lengthscales * 3.3, 0)    # 10
 
+    elif chem_fp == 'Mordred':
+        df_mordred = utils.get_mordred(df_eco)
+        # minmax scale integer values
+        df_m_int = df_mordred.loc[:, df_mordred.dtypes == 'int']
+        df_m_int_scaled = minmaxscale_variables(df_m_int, 
+                                                trainvalid_idx, 
+                                                test_idx)
+        # standardscale float values
+        df_m_float = df_mordred.loc[:, df_mordred.dtypes == 'float']
+        df_m_float_scaled = standardscale_variables(df_m_float, 
+                                                    trainvalid_idx, 
+                                                    test_idx)
+        df_chem_fp = pd.concat((df_m_int_scaled, df_m_float_scaled), axis=1)
+        lengthscales_fp = lengthscales
+        
     elif chem_fp == 'none':
         df_chem_fp = pd.DataFrame()
         lengthscales_fp = lengthscales
@@ -711,7 +747,7 @@ def get_complete_kernel(len_exp, len_chem_fp, len_chem_prop, len_tax_pdm, len_ta
 # ------------------------------
 def _calculate_rmse(df, col_true, col_pred):
     
-    return mean_squared_error(df[col_true], df[col_pred], squared=False)
+    return root_mean_squared_error(df[col_true], df[col_pred])
 
 def _calculate_mae(df, col_true, col_pred):
     
