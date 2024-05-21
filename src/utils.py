@@ -154,7 +154,7 @@ def get_mordred(df_eco):
     df_mordred = df_mordred.loc[:, df_mordred.std() < 1e4].copy()
 
     # remove integer columns with very low standard deviations
-    list_cols = list(df_mordred.loc[:, (df_mordred.dtypes == 'int') & (df_mordred.std() < 0.05)].columns)
+    list_cols = list(df_mordred.loc[:, ((df_mordred.dtypes.apply(lambda x: x.kind == 'i')) & (df_mordred.std() < 0.05))].columns)
     if 'chem_mordred_SsssP' in df_mordred.columns:
         list_cols += ['chem_mordred_SsssP']   # a float column with all zeros but one other value
     df_mordred = df_mordred.drop(list_cols, axis=1)

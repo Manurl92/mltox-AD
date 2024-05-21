@@ -275,12 +275,13 @@ def get_df_chem_fp(chem_fp,
     elif chem_fp == 'Mordred':
         df_mordred = utils.get_mordred(df_eco)
         # minmax scale integer values
-        df_m_int = df_mordred.loc[:, df_mordred.dtypes == 'int']
+        #print(df_mordred.loc[:,df_mordred.dtypes.apply(lambda x: x.kind == 'i')])
+        df_m_int = df_mordred.loc[:, df_mordred.dtypes.apply(lambda a: a.kind == 'i')]
         df_m_int_scaled = minmaxscale_variables(df_m_int, 
                                                 trainvalid_idx, 
                                                 test_idx)
         # standardscale float values
-        df_m_float = df_mordred.loc[:, df_mordred.dtypes == 'float']
+        df_m_float = df_mordred.loc[:, df_mordred.dtypes.apply(lambda a: a.kind == 'f')]
         df_m_float_scaled = standardscale_variables(df_m_float, 
                                                     trainvalid_idx, 
                                                     test_idx)
@@ -293,6 +294,7 @@ def get_df_chem_fp(chem_fp,
 
     len_chem_fp = df_chem_fp.shape[1]
 
+    print(df_chem_fp)
     return df_chem_fp, len_chem_fp, lengthscales_fp
 
 def get_df_chem_prop(chem_prop, df_chem_prop_all, lengthscales, trainvalid_idx, test_idx):
@@ -850,3 +852,139 @@ def calculate_evaluation_metrics(df_preds_train,
     df_error = df_error.rename(columns={'index': 'fold'})
     
     return df_error
+
+def get_standardization(df, train_id, test_id, normalized = True):
+    #Creating df for the AD [true, false] : false - outside of the AD: make no prediction
+    df_insideAD = pd.DataFrame({'Inside': [False] * len(df)})
+    df_insideAD_test = df_insideAD.iloc[test_id].copy()
+    df_insideAD_test['control'] = 0
+
+
+
+    
+    
+    len_test_id_pre = len(test_id)
+
+    
+    #if normalized == False:
+    #    mean = df_chem_prop.iloc[train_idx].mean(axis = 0)
+    #    std = df_chem_prop.iloc[train_idx].std(axis = 0)
+    #    df_chem_prop_abs = abs((df - mean) / std) 
+    #else:
+    #    df_chem_prop_abs = abs(df)
+
+    #TODO this is a bit messy as the variables are then scaled again in another function
+    
+    df = standardscale_variables(df, train_id, test_id)
+    df_chem_prop_abs = abs(df)
+    
+
+    
+    df_test_chem_prop_abs = df_chem_prop_abs.iloc[test_id]
+    #print(df_test_chem_prop_abs)
+    df_test_chem_prop_abs_max = pd.DataFrame({'outlier': df_test_chem_prop_abs.max(axis=1) < 3})
+    #print(df_test_chem_prop_abs_max.iloc[:,0])
+    
+    print('# of obs with one value >3',sum(~df_test_chem_prop_abs_max.iloc[:,0]))
+
+    
+    #Setting all rows that have max value <3 to inside AD, e.g. all z-scores are below 3
+    df_insideAD_test.loc[df_test_chem_prop_abs_max.iloc[:,0],'Inside'] = True
+    df_insideAD_test.loc[df_test_chem_prop_abs_max.iloc[:,0],'control'] += 1
+
+    #Getting bool mask for all rows that have all values above 3
+    min_bool = (df_test_chem_prop_abs.min(axis=1) > 3) & (df_insideAD_test.loc[:,'control'] == 0)
+    #not needed as False is set as default
+
+    
+    df_insideAD_test.loc[min_bool, 'control'] += 1
+    print('# obs all values >3:', sum(min_bool))
+
+    
+    df_mean = df_test_chem_prop_abs.mean(axis=1)
+    df_std = df_test_chem_prop_abs.std(axis=1)
+    s_new = df_mean + 1.28*df_std
+
+    s_new_bool = (s_new > 3)  & (df_insideAD_test.loc[:,'control'] == 0)
+    s_new_bool_neg = (s_new <= 3)  & (df_insideAD_test.loc[:,'control'] == 0)
+
+    #not needed as False is default
+    df_insideAD_test.loc[s_new_bool, 'Inside'] = False
+    df_insideAD_test.loc[s_new_bool, 'control'] += 1
+    print('Anzahl mit s_new Grösser Grenze:',sum(s_new_bool))
+    print('Anzahl mit s_new chliner Grenze:',sum(s_new_bool_neg))
+
+    df_insideAD_test.loc[s_new_bool_neg, 'Inside'] = True
+    df_insideAD_test.loc[s_new_bool_neg, 'control'] += 1
+    assert sum(df_insideAD_test.loc[:,'control'] == 0) == 0, "There was an error in the standardization approach"
+    test_id_post = df_insideAD_test[df_insideAD_test['Inside']].index
+    len_test_id_post = len(test_id_post)
+    index_outside = df_insideAD_test[~df_insideAD_test['Inside']].index
+    # print('index outside object:', index_outside)
+
+    test_idx_outside_str = index_to_string(index_outside)
+    # print('innerhalb std_fct', df_chem_prop_abs.loc[index_outside])
+    return(test_id_post, len_test_id_pre, len_test_id_post, test_idx_outside_str)
+
+def get_range_box(df, train_id, test_id):
+    
+    check_NA = df.isna().any().any()
+    assert ~check_NA, 'double check the dataframe, there are missing values in the data'
+    
+    df_trainval = df.loc[train_id]
+    df_test = df.loc[test_id]
+    df_test['outside_count'] = 0
+
+    for col_name, col_val in df.items():
+
+        #no need to iterate over this
+        if col_name == 'outside_count':
+            break
+
+        trainval_max = df_trainval.loc[:,col_name].max()
+        trainval_min = df_trainval.loc[:,col_name].min()
+        #print(trainval_max)
+        #print(trainval_min)
+        print(sum(df_test.loc[:,col_name] < trainval_max))
+        print(sum(df_test.loc[:,col_name] > trainval_min))
+
+        bool_mask = (df_test.loc[:,col_name] <= trainval_max) & (df_test.loc[:, col_name] >= trainval_min)
+        df_test.loc[~bool_mask, 'outside_count'] =+1
+
+    test_outside_count = sum(df_test.loc[:,'outside_count'] != 0)
+    new_test_idx = test_id[(df_test.loc[:,'outside_count'] == 0)]
+    test_idx_outside = test_id[(df_test.loc[:,'outside_count'] != 0)]
+    test_idx_outside_str = index_to_string(test_idx_outside)
+    percentage_AD = len(new_test_idx) / len(test_id)
+    print("From the total {} test points, {} are considered inside the AD using range box.".format(len(test_id),len(new_test_idx)))
+
+    return(new_test_idx, len(test_id), len(new_test_idx), test_idx_outside_str)
+
+def index_to_string(test_id_outside_AD):
+    ind_outside_list = test_id_outside_AD.tolist()
+    id_outside_string = ', '.join(map(str, ind_outside_list))
+    return(id_outside_string)
+
+
+def get_unique_chemicals(id_string, df):
+    #getting a string of IDs outside of the AD
+    if len(id_string) == 0:
+        return('', 0)
+    id_outside = pd.Index(id_string.split(','))
+    print(id_outside)
+    print('es chonnt df')
+    print(df)
+    
+    cas_unique = df.iloc[id_outside]['test_cas'].unique()
+    str_cas_unique = ','.join(cas_unique)
+    cas_unique_len = len(cas_unique)
+    return(str_cas_unique, cas_unique_len)
+
+def get_unique_index_chemicals(df):
+    #used for dim reduction. get only unique indices for every cas
+    index_list = []
+    for value in df['test_cas'].unique():
+        index_next = df[df['test_cas'] == value].index[0]
+        index_list.append(index_next)
+
+    return(pd.Index(index_list))    

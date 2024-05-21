@@ -61,11 +61,11 @@ param_grid = [
      # data
      'challenge': ['t-F2F'],
      # features
-     'chem_fp': ['none', 'MACCS', 'pcp', 'Morgan', 'ToxPrint', 'mol2vec', 'Mordred'], 
+     'chem_fp': ['none', 'MACCS', 'pcp', 'Morgan', 'ToxPrint', 'mol2vec'], #['Mordred']
      # splits
-     'groupsplit': ['totallyrandom', 'occurrence','scaffold-generic'],
+     'groupsplit': ['totallyrandom', 'occurrence'],
      # concentration
-     'conctype': ['molar', 'mass'],
+     'conctype': ['molar'],   #['molar', 'mass']
     }
 ]
 

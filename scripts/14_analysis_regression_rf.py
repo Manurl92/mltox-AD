@@ -48,7 +48,7 @@ param_grid = [
      'tax_prop': ['taxprop-migrate2'],          #['none', 'taxprop-migrate2', 'taxprop-migrate5'],
      'exp': ['exp-dropfirst'],                  #['none', 'exp-dropnone', 'exp-dropfirst'],     # use dropfirst
      # splits
-     'groupsplit': ['totallyrandom', 'occurrence'],
+     'groupsplit': ['totallyrandom', 'occurrence', 'scaffold-generic'],
      # concentration
      'conctype': ['molar', 'mass'] 
     }

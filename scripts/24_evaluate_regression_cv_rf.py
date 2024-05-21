@@ -43,7 +43,7 @@ df_errors = utils._transform_to_categorical(df_errors, col, list_categories)
 
 # categorical variable for groupsplit
 col = 'groupsplit'
-list_categories = ['totallyrandom', 'occurrence']
+list_categories = ['totallyrandom', 'occurrence', 'scaffold-generic']
 df_errors = utils._transform_to_categorical(df_errors, col, list_categories)
 
 # categorical variable for conctype
